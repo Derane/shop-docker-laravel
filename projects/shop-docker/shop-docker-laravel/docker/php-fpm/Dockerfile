@@ -1,29 +1,36 @@
 FROM php:8.2-fpm
 
-RUN apt-get update && apt-get install -y libmcrypt-dev libpng-dev mariadb-client \
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
     libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
     libjpeg62-turbo-dev \
-    libgd-dev \
-    && docker-php-ext-install pdo_mysql
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl
 
-RUN docker-php-ext-configure exif
-RUN docker-php-ext-install exif
-RUN docker-php-ext-enable exif
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-webp=/usr/include/  --with-jpeg=/usr/include/
-RUN docker-php-ext-install -j$(nproc) gd
+# Install extensions
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/
+RUN docker-php-ext-install gd
 
-RUN apt install jpegoptim optipng pngquant gifsicle libavif-bin -y
+# Install composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN apt-get install -y wget unzip curl
-RUN curl -sS https://getcomposer.org/installer |php
-RUN mv composer.phar /usr/local/bin/composer
+WORKDIR /var/www/html
 
-COPY ./conf.d /usr/local/etc/php/conf.d/
+COPY . .
 
-WORKDIR /var/www
+RUN composer install
 
+CMD ["php-fpm"]
 
-
+EXPOSE 9000
