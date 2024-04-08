@@ -11,33 +11,26 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        Model::preventLazyLoading(!app()->isProduction());
-        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
-        DB::whenQueryingForLongerThan(500, function (MySqlConnection $connection) {
-            logger()->channel('telegram')
-                ->debug('whenQueryingForLongerThan' . $connection->query()->toSql());
-        });
+        Model::shouldBeStrict(!app()->isProduction());
 
-        $kernel = app(Kernel::class);
-        $kernel->whenRequestLifecycleIsLongerThan(
-            CarbonInterval::seconds(4),
-            function () {
-                logger()->channel('telegram')
-                    ->debug('whenRequestLifecycleIsLongerThan' .request()->url());
-            }
-        );
+        if (app()->isProduction()) {
+            DB::listen(function ($query) {
+                if($query->time > 25) {
+                    logger()
+                        ->channel('telegram')
+                        ->debug('query long than 25 seconds' . $query->sql, $query->bindings);
+                }
+            });
+            app(Kernel::class)->whenRequestLifecycleIsLongerThan(
+                CarbonInterval::seconds(4),
+                function () {
+                    logger()->channel('telegram')
+                        ->debug('whenRequestLifecycleIsLongerThan' . request()->url());
+                }
+            );
+        }
     }
 }
