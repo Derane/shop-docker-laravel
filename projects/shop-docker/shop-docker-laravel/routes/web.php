@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
 
     return view('welcome');
-});
-
+})->name('home');
+Route::get('/login', function () {
+    return view('auth.index');
+})->name('login');
 Route::get('/hello', [\App\Http\Controllers\HelloController::class, 'index']);
