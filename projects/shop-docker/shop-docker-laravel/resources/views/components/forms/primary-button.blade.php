@@ -1,3 +1,3 @@
-<div>
-    <!-- When there is no desire, all things are at peace. - Laozi -->
-</div>
+<button type="submit" class="w-full btn btn-pink">
+    {{ $slot }}
+</button>
