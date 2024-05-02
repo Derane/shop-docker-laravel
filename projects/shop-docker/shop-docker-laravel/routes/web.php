@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-
-    return view('welcome');
-})->name('home');
-Route::get('/login', function () {
-    return view('auth.index');
-})->name('login');
+Route::get('/', HomeController::class)->name('home');
 Route::get('/hello', [\App\Http\Controllers\HelloController::class, 'index']);
+Route::controller(\App\Http\Controllers\AuthController::class)->group(function (){
+    Route::get('sign-up', 'signUp')->name('sign-up');
+    Route::get('login', 'index')->name('login');
+
+});

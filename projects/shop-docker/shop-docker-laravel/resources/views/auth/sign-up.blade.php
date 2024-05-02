@@ -10,7 +10,17 @@
         </x-forms.error>
         @enderror
         <input name="password" type="password" class="w-full h-14 px-4 rounded-lg border border-[#A07BF0] bg-white/20 focus:border-pink focus:shadow-[0_0_0_2px_#EC4176] outline-none transition text-white placeholder:text-white text-xxs md:text-xs font-semibold" placeholder="Пароль" required>
+        @error('password')
+        <x-forms.error>
+            {{ $message }}
+        </x-forms.error>
+        @enderror
         <input name="password_confirmation  " type="password" class="w-full h-14 px-4 rounded-lg border border-[#A07BF0] bg-white/20 focus:border-pink focus:shadow-[0_0_0_2px_#EC4176] outline-none transition text-white placeholder:text-white text-xxs md:text-xs font-semibold" placeholder="Пароль ewe" required>
+        @error('password_confirmation')
+        <x-forms.error>
+            {{ $message }}
+        </x-forms.error>
+        @enderror
         <x-forms.primary-button>Register</x-forms.primary-button>
         <x-slot:socialAuth>
             <ul class="space-y-3 my-2">
