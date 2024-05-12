@@ -2,7 +2,7 @@
 @section('title', 'Recover password')
 @section('content')
 <x-forms.auth-forms title="Recover password" action="">
-    <x-forms.text-input name="email" :isError="true" type="email" placeholder="E-mail"></x-forms.text-input>
+    <x-forms.text-input name="email" :isError="true" type="email" placeholder="E-mail" method="POST"></x-forms.text-input>
     @error('email')
     <x-forms.error>
         {{ $message }}

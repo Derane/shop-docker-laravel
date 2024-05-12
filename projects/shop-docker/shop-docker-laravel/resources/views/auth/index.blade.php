@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 @section('title', 'Вход в аккаунт')
 @section('content')
-<x-forms.auth-forms title="Вход в аккаунт" action="">
+<x-forms.auth-forms title="Вход в аккаунт" action="{{route('signIn')}}" method="POST">
     <x-forms.text-input name="email" :isError="true" type="email" placeholder="E-mail"></x-forms.text-input>
     @error('email')
     <x-forms.error>
