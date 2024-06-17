@@ -1,5 +1,6 @@
 @props([
     'type' => 'text',
+    'value' => '',
     'isError' => false
     ])
 <input type="{{ $type }}" {{ $attributes->class(

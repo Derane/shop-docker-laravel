@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/hello', [\App\Http\Controllers\HelloController::class, 'index']);
 Route::controller(\App\Http\Controllers\AuthController::class)->group(function (){
-    Route::get('login', 'index')->name('login');
-    Route::post('login', 'signIn')->name('signIn');
-    Route::get('sign-up', 'signUp')->name('sign-up');
-
+    Route::get('/login', 'index')->name('login');
+    Route::post('/login', 'signIn')->name('signIn');
+    Route::get('/sign-up', 'signUp')->name('sign-up');
+    Route::post('/sign-up', 'store')->name('store');
+    Route::delete('/logout', 'logout')->name('logout');
 });

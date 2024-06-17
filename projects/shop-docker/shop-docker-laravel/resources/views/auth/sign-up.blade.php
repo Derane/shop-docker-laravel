@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 @section('title', 'Регистрация')
 @section('content')
-    <x-forms.auth-forms title="Регистрация">
+    <x-forms.auth-forms title="Регистрация" action="{{route('store')}}" method="POST">
         @csrf
         <x-forms.text-input name="name" type="text" placeholder="Name"></x-forms.text-input>
         @error('email')
