@@ -22,4 +22,9 @@ Route::controller(\App\Http\Controllers\AuthController::class)->group(function (
     Route::get('/sign-up', 'signUp')->name('sign-up');
     Route::post('/sign-up', 'store')->name('store');
     Route::delete('/logout', 'logout')->name('logout');
+    Route::get('/forgot-password', function () {
+        return view('forgot-password');
+    })->middleware('guest')->name('password.request');
+    Route::post('/forgot-password', 'forgotPassword')
+        ->middleware('guest')->name('password.email');
 });
